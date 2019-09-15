@@ -16,7 +16,7 @@ public final class ConfigMapWatchClient {
 	private static class ConfigMapWatchClientRouter extends RouteBuilder {
         @Override
         public void configure() throws Exception {
-        	 from("timer://foo?fixedRate=true&period=60000")
+             from("timer://foo?fixedRate=true&period=60000")
              .setHeader("Authorization", simple("Bearer sXoZfVfMW2f4nWjiFsOGjf56B70nEjr18LX1c4bHHVo"))
              .setHeader("Accept", simple("application/json"))
              .setHeader("CamelHttpMethod", constant("GET"))
