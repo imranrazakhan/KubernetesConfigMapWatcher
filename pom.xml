@@ -1,0 +1,117 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.imran.kubernetes</groupId>
+  <artifactId>KubernetesConfigMapWatcher</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  
+      <name>Kubernetes :: Deployer</name>
+
+    <properties>
+        <camel-version>2.24.1</camel-version>
+        <log4j2-version>2.12.0</log4j2-version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-core</artifactId>
+            <version>${camel-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-jms</artifactId>
+            <version>${camel-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-exec</artifactId>
+            <version>${camel-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-mqtt</artifactId>
+            <version>${camel-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-kubernetes</artifactId>
+            <version>${camel-version}</version>
+        </dependency>
+        
+        <dependency>
+		    <groupId>org.apache.camel</groupId>
+		    <artifactId>camel-http4</artifactId>
+		   <version>${camel-version}</version>
+		</dependency>
+
+		<dependency>
+		  <groupId>org.apache.camel</groupId>
+		  <artifactId>camel-chunk</artifactId>
+		   <version>${camel-version}</version>
+		</dependency>
+        
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-test</artifactId>
+            <version>${camel-version}</version>
+            <scope>test</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-broker</artifactId>
+            <version>5.15.9</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- logging -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>${log4j2-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>${log4j2-version}</version>
+        </dependency>
+        <!-- SLF4J Bridge -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j-impl</artifactId>
+            <version>${log4j2-version}</version>
+        </dependency>
+        
+    </dependencies>
+
+    <build>
+        <plugins>
+
+            <plugin>
+                <groupId> com.jolira </groupId>
+                <artifactId> onejar-maven-plugin </artifactId>
+                <executions>
+                    <execution>
+                        <configuration>
+                            <mainClass>com.aggreko.ycube.yq.ipc.management.ShutdownIPC</mainClass>
+                            <attachToBuild> true </attachToBuild>
+                            <!-- https://code.google.com/p/onejar-maven-plugin/issues/detail?id=8 -->
+                            <!--classifier>onejar</classifier -->
+                            <filename>
+                                ${project.build.finalName}-onejar.${project.packaging} </filename>
+                        </configuration>
+                        <goals>
+                            <goal> one-jar </goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            
+        </plugins>
+    </build>
+    
+</project>
