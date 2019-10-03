@@ -1,0 +1,26 @@
+Vagrant.configure("2") do |config|
+
+    # create okd1 node
+    config.vm.define :okd1 do |okd1_config|
+      okd1_config.vm.box = "centos/7"
+      okd1_config.vm.network "bridged"
+      okd1_config.vm.hostname = "okd1.ycube.local"
+      okd1_config.vm.provider "virtualbox" do |vb|
+        vb.memory = "4096"
+      end
+      okd1_config.vm.network "forwarded_port", guest: 8443, host: 8443
+      okd1_config.vm.network :forwarded_port, guest: 80, host: 80
+      okd1_config.vm.network :forwarded_port, guest: 443, host: 443
+    end 
+    
+    
+    # create okd2 node
+    config.vm.define :okd2 do |okd2_config|
+      okd2_config.vm.box = "centos/7"
+      okd2_config.vm.hostname = "okd2.ycube.local"     
+      okd2_config.vm.provider "virtualbox" do |vb|
+        vb.memory = "3072"
+      end
+    end 
+    
+end

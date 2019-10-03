@@ -16,13 +16,29 @@ public final class ConfigMapWatchClient {
 	private static class ConfigMapWatchClientRouter extends RouteBuilder {
         @Override
         public void configure() throws Exception {
-        	 from("timer://foo?fixedRate=true&period=60000")
-             .setHeader("Authorization", simple("Bearer sXoZfVfMW2f4nWjiFsOGjf56B70nEjr18LX1c4bHHVo"))
-             .setHeader("Accept", simple("application/json"))
-             .setHeader("CamelHttpMethod", constant("GET"))
-             .to("https4://m.devokd.younicos.local:8443/api/v1/watch/namespaces/yq-qa/configmaps/my-config-map?httpClientConfigurer=#trustCert")
-             .to("log:my?showAll=true&multiline=true")
-             .to("mock:result");
+        	
+        	String host = "https://localhost:8443";
+            String authToken = "xxxxx";
+        	 
+        	fromF("kubernetes-config-maps://%s?oauthToken=%s&trustCerts=true&namespace=yq-qa&resourceName=my-config-map", host, authToken)
+            .choice()
+                .when( header("CamelKubernetesEventAction").isEqualTo("MODIFIED") )
+                	.to("direct:restartPods")
+            .end();
+            
+            
+            from("direct:restartPods")
+            .toF("kubernetes-pods://%s?oauthToken=%s&trustCerts=true&namespace=default&operation=listPodsByLabels&labelKey=this&labelValue=rocks", host, authToken)
+            .split(body())
+                .setHeader(KubernetesConstants.KUBERNETES_POD_NAME, simple("${body.getMetadata().getName()}"))
+                .toF("kubernetes-pods://%s?oauthToken=%s&trustCerts=true&operation=deletePod", host, authToken)
+                .choice()
+                    .when( body() )
+                        .log(simple("${header.CamelKubernetesPodName}")+" has been restarted.")
+                .end()
+            .end()
+            .log("#################ALL PODs sas been Restarted##################");
+            
         }
 	}
 
