@@ -7,11 +7,11 @@ import org.apache.camel.main.Main;
 public final class ConfigMapWatchClient {
 	
 	public static void main(String[] args) throws Exception {
-        Main main = new Main();
-        main.bind("trustCert", new HttpClientConfigurerTrustAllCACerts());
-        main.addRouteBuilder(new ConfigMapWatchClientRouter());
-        main.run(args);
-    }
+        	Main main = new Main();
+        	main.bind("trustCert", new HttpClientConfigurerTrustAllCACerts());
+        	main.addRouteBuilder(new ConfigMapWatchClientRouter());
+        	main.run(args);
+    	}
 	
 	private static class ConfigMapWatchClientRouter extends RouteBuilder {
         @Override
@@ -38,7 +38,7 @@ public final class ConfigMapWatchClient {
                 .end()
             .end()
             .log("#################ALL PODs sas been Restarted##################");
-            
+           
         }
 	}
 
