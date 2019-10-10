@@ -17,10 +17,10 @@ public final class ConfigMapWatchClient {
         @Override
         public void configure() throws Exception {
         	
-        	String host = "https://localhost:8443";
+            String host = "https://localhost:8443";
             String authToken = "xxxxx";
         	 
-        	fromF("kubernetes-config-maps://%s?oauthToken=%s&trustCerts=true&namespace=yq-qa&resourceName=my-config-map", host, authToken)
+            fromF("kubernetes-config-maps://%s?oauthToken=%s&trustCerts=true&namespace=yq-qa&resourceName=my-config-map", host, authToken)
             .choice()
                 .when( header("CamelKubernetesEventAction").isEqualTo("MODIFIED") )
                 	.to("direct:restartPods")
